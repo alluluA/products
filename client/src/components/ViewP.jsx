@@ -13,7 +13,7 @@ const ViewP = props =>{
         
         
     },{});
-console.log(product)
+console.log(product);
     return(
 
     <div className="container mt-5 ">

@@ -1,15 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
-import View from './View';
 
-const Form = props =>{
-    const [title, setTitle] = useState('');
-    const [price, setPrice] = useState(0);
-    const [description, setDesc] = useState('');
+
+const UpdateForm = props =>{
+
+
+    const [product, setProduct] = useState({});
+    const [title, setTitle] = useState(product.title);
+    const [price, setPrice] = useState(product.price);
+    const [description, setDesc] = useState(product.description);
+    
+    useEffect(()=>{
+        axios.get(`http://localhost:8000/api/products/${props.id}`)
+        .then(res => {setProduct(res.data.product) 
+            console.log('res: ', res)})
+            .catch(err => console.log('Error: ', err))
+            
+            setTitle(product.title);
+            setPrice(product.price);
+            setDesc(product.description)
+            
+        },{});
+        console.log(product);
 
     const onSubmitHandeler = e =>{
         e.preventDefault();
-        axios.post('http://localhost:8000/api/products/new',{
+        axios.put(`http://localhost:8000/api/products/update/${product._id}`,{
             title,
             price,
             description
@@ -22,27 +38,8 @@ const Form = props =>{
         setDesc('')
     }
 
-
-//   const [products, setProducts] = useState([]);
-
-//   useEffect(()=>{
-//     axios.get('http://localhost:8000/api/products/')
-//     .then(res => {setProducts(res.data.products) 
-//         console.log('res: ', res)})
-//     .catch(err => console.log('Error: ', err))
-// },{});
-
-
-    // const del = id =>{
-    //     console.log('clicked');
-    //     axios.delete(`http://localhost:8000/api/products/delete/${ id }`)
-    //     .then(res => {
-    //         console.log('res: ', res)
-    //     })
-    //     .catch(err => console.log('Error: ', err))
-    // }
     return(
-        <div>
+
     <div className="container mt-5">
         <form onSubmit={ onSubmitHandeler }>
     <div className="form-group row">
@@ -66,16 +63,12 @@ const Form = props =>{
     <div className="form-group row">
         <p className="col-4"></p>
     <div className="col-sm-6">
-    <input className="btn btn-outline-dark" type="submit" value="Create Product" />
+    <input className="btn btn-outline-dark" type="submit" value="Update Product" />
     </div></div>
     </form>
-
-
-   
     </div>
-     <View />
-    </div>
+
     );
 }
 
-export default Form;
+export default UpdateForm;
