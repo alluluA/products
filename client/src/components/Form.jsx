@@ -1,5 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import axios from 'axios';
+import View from './View';
+
 
 const Form = props =>{
     const [title, setTitle] = useState('');
@@ -20,6 +22,16 @@ const Form = props =>{
         setPrice(0);
         setDesc('')
     }
+
+
+  const [products, setProducts] = useState([]);
+
+  useEffect(()=>{
+    axios.get('http://localhost:8000/api/products/')
+    .then(res => {setProducts(res.data.products) 
+        console.log('res: ', res)})
+    .catch(err => console.log('Error: ', err))
+},[]);
     return(
 
     <div className="container mt-5">
@@ -48,7 +60,11 @@ const Form = props =>{
     <input className="btn btn-outline-dark" type="submit" value="Create Product" />
     </div></div>
     </form>
+
+
+    <View products={ products }/>
     </div>
+
     );
 }
 

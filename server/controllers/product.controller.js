@@ -7,7 +7,7 @@ module.exports.findAllProducts = (req, res) => {
 };
 
 module.exports.finedOneProduct = (req, res) => {
-    Product.finedOne({ _id: req.params.id })
+    Product.findOne({ _id: req.params.id })
     .then(oneProduct => res.json({ product: oneProduct }))
     .catch(err => res.json({ message: "Something went wrong", error: err }));
 };
